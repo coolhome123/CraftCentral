@@ -1,4 +1,4 @@
-from flask import render_template, request, flash, redirect, url_for, jsonify
+from flask import render_template, request, flash, redirect, url_for, jsonify, session
 from app import app, db
 from models import Family, Child
 from forms import FamilyForm, ChildForm
