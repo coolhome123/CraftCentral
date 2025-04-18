@@ -101,8 +101,35 @@ def success(family_id):
     family = Family.query.get_or_404(family_id)
     return render_template('success.html', family=family)
 
+# Admin password (this is a simple implementation - in production, use a more secure approach)
+ADMIN_PASSWORD = "admin123"  # You should change this to a stronger password
+
+@app.route('/admin', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        if request.form.get('password') == ADMIN_PASSWORD:
+            # Set a session variable to indicate admin is logged in
+            session['admin_logged_in'] = True
+            flash("Login successful!", "success")
+            return redirect(url_for('list_families'))
+        else:
+            flash("Invalid password", "danger")
+    
+    return render_template('admin_login.html')
+
+@app.route('/admin/logout')
+def admin_logout():
+    session.pop('admin_logged_in', None)
+    flash("You have been logged out", "info")
+    return redirect(url_for('index'))
+
 @app.route('/families')
 def list_families():
+    # Check if admin is logged in
+    if not session.get('admin_logged_in'):
+        flash("You need to login as admin to view family records", "warning")
+        return redirect(url_for('admin_login'))
+    
     families = Family.query.order_by(Family.created_at.desc()).all()
     return render_template('families.html', families=families)
 
