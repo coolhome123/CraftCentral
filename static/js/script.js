@@ -162,9 +162,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('familyForm');
     
     if (form) {
-        // Initialize address autocomplete
-        initializeAddressAutocomplete();
-        
         form.addEventListener('submit', function(event) {
             if (!form.checkValidity()) {
                 event.preventDefault();
