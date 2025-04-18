@@ -16,9 +16,11 @@ def index():
         # Create a new family record
         try:
             family = Family(
-                name=request.form['name'],
-                phone=request.form['phone'],
-                address=request.form['address'],
+                head_name=request.form['head_name'],
+                head_phone=request.form['head_phone'],
+                spouse_name=request.form.get('spouse_name', ''),
+                spouse_phone=request.form.get('spouse_phone', ''),
+                address=request.form.get('address', ''),
                 marital_status=request.form['marital_status']
             )
             db.session.add(family)
