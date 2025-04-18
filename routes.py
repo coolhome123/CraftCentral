@@ -4,6 +4,14 @@ from models import Family, Child
 from forms import FamilyForm, ChildForm
 from datetime import datetime
 import logging
+import os
+from google_sheets_util import initialize_spreadsheet, add_family_to_spreadsheet
+
+# Initialize the spreadsheet on startup
+try:
+    initialize_spreadsheet()
+except Exception as e:
+    logging.error(f"Failed to initialize Google Sheet: {str(e)}")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -63,7 +71,21 @@ def index():
             
             if validation_passed:
                 db.session.commit()
-                flash("Family information saved successfully!", "success")
+                
+                # Add the family data to Google Sheets
+                try:
+                    # Reload the family to get the child relationships
+                    family = Family.query.get(family.id)
+                    sheets_success = add_family_to_spreadsheet(family)
+                    
+                    if sheets_success:
+                        flash("Family information saved successfully and added to Google Sheets!", "success")
+                    else:
+                        flash("Family information saved to database, but could not update Google Sheets.", "warning")
+                except Exception as e:
+                    logging.error(f"Error adding family to Google Sheets: {str(e)}")
+                    flash("Family information saved, but there was an error updating Google Sheets.", "warning")
+                
                 return redirect(url_for('success', family_id=family.id))
             else:
                 db.session.rollback()
