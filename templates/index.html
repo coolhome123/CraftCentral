@@ -104,8 +104,10 @@
                                     <input type="text" class="form-control" id="child_1-name" name="child_1-name" required>
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label for="child_1-date_of_birth" class="form-label">Date of Birth <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control dob-input" id="child_1-date_of_birth" name="child_1-date_of_birth" required>
+                                    <label for="child_1-date_of_birth" class="form-label">Date of Birth (DD/MM) <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control dob-input" id="child_1-date_of_birth" name="child_1-date_of_birth" 
+                                           placeholder="DD/MM" pattern="(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])" required>
+                                    <div class="invalid-feedback">Please enter a valid date in DD/MM format</div>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label for="child_1-age" class="form-label">Age</label>

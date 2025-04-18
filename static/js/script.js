@@ -85,8 +85,10 @@ function createChildForm(index, existingValues = {}) {
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="child_${index}-date_of_birth" class="form-label">Date of Birth (DD/MM) <span class="text-danger">*</span></label>
-                        <input type="date" class="form-control dob-input" id="child_${index}-date_of_birth" 
-                            name="child_${index}-date_of_birth" value="${existingValues.dob || ''}" required>
+                        <input type="text" class="form-control dob-input" id="child_${index}-date_of_birth" 
+                            name="child_${index}-date_of_birth" value="${existingValues.dob || ''}" 
+                            placeholder="DD/MM" pattern="(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])" required>
+                        <div class="invalid-feedback">Please enter a valid date in DD/MM format</div>
                     </div>
                 </div>
                 <div class="row">
