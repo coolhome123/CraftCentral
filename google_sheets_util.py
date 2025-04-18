@@ -50,9 +50,14 @@ def initialize_spreadsheet():
         
         # Set up column headers for the sheet
         headers = [
-            "ID", "Date Added", "Head of Household", "Head Phone", 
-            "Marital Status", "Spouse Name", "Spouse Phone", 
-            "Address", "Children Count", "Child Names", "Child DOBs", "Child Ages", "Child Marital Statuses"
+            "ID", "Date Added", "Head of Household", "Head GAM", 
+            "Marital Status", "Spouse Name", "Spouse GAM", 
+            "CITY USA", "Children Count",
+            "Child 1 Name", "Child 1 DOB", "Child 1 Status",
+            "Child 2 Name", "Child 2 DOB", "Child 2 Status",
+            "Child 3 Name", "Child 3 DOB", "Child 3 Status",
+            "Child 4 Name", "Child 4 DOB", "Child 4 Status",
+            "Child 5 Name", "Child 5 DOB", "Child 5 Status"
         ]
         
         # Check if headers already exist
@@ -93,12 +98,7 @@ def add_family_to_spreadsheet(family):
         # Collect child information
         children = family.children or []
         children_count = len(children)
-        child_names = ", ".join([child.name for child in children]) if children else "N/A"
-        child_dobs = ", ".join([child.date_of_birth.strftime('%Y-%m-%d') for child in children]) if children else "N/A"
-        child_ages = ", ".join([str(child.age) for child in children]) if children else "N/A"
-        child_marital_statuses = ", ".join([child.marital_status for child in children]) if children else "N/A"
-        
-        # Create row data
+        # Create base row data
         row_data = [
             str(family.id),
             date_added,
@@ -107,13 +107,21 @@ def add_family_to_spreadsheet(family):
             family.marital_status,
             family.spouse_name or "N/A",
             family.spouse_phone or "N/A",
-            family.address or "N/A",
-            str(children_count),
-            child_names,
-            child_dobs,
-            child_ages,
-            child_marital_statuses
+            family.address or "CITY USA",
+            str(children_count)
         ]
+        
+        # Add data for each possible child (up to 5)
+        for i in range(5):
+            if i < len(children):
+                child = children[i]
+                row_data.extend([
+                    child.name,
+                    child.date_of_birth.strftime('%d/%m'),
+                    child.marital_status
+                ])
+            else:
+                row_data.extend(["N/A", "N/A", "N/A"])
         
         # Find the next available row
         range_name = 'Sheet1!A:A'

@@ -84,13 +84,9 @@ function createChildForm(index, existingValues = {}) {
                             value="${existingValues.name || ''}" required>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label for="child_${index}-date_of_birth" class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                        <label for="child_${index}-date_of_birth" class="form-label">Date of Birth (DD/MM) <span class="text-danger">*</span></label>
                         <input type="date" class="form-control dob-input" id="child_${index}-date_of_birth" 
                             name="child_${index}-date_of_birth" value="${existingValues.dob || ''}" required>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="child_${index}-age" class="form-label">Age</label>
-                        <input type="text" class="form-control age-field" id="child_${index}-age" readonly>
                     </div>
                 </div>
                 <div class="row">
