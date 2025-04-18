@@ -101,8 +101,11 @@ def success(family_id):
     family = Family.query.get_or_404(family_id)
     return render_template('success.html', family=family)
 
-# Admin password (this is a simple implementation - in production, use a more secure approach)
-ADMIN_PASSWORD = "admin123"  # You should change this to a stronger password
+# Get admin password from environment variable
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD')
+if not ADMIN_PASSWORD:
+    logger.warning("No admin password set! Using default (not recommended for production)")
+    ADMIN_PASSWORD = "admin123"
 
 @app.route('/admin', methods=['GET', 'POST'])
 def admin_login():
