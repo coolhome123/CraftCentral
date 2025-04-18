@@ -22,15 +22,9 @@ def get_google_sheets_service():
         try:
             # Try to parse the JSON credentials
             credentials_info = json.loads(credentials_json)
-        except json.JSONDecodeError:
-            # If it's not valid JSON, assume it's a path to a JSON file
-            logger.info("Credentials not in JSON format, trying as a file path")
-            try:
-                with open(credentials_json, 'r') as f:
-                    credentials_info = json.load(f)
-            except (FileNotFoundError, json.JSONDecodeError) as e:
-                logger.error(f"Could not load credentials from file: {str(e)}")
-                return None
+        except json.JSONDecodeError as e:
+            logger.error(f"Invalid JSON credentials format: {str(e)}")
+            return None
         
         # Create credentials object
         credentials = service_account.Credentials.from_service_account_info(
