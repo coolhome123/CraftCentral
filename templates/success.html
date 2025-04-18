@@ -18,7 +18,7 @@
         
         <div class="row mb-4">
             <div class="col-md-6">
-                <p><strong>Head of Household:</strong> {{ family.head_name }}</p>
+                <p><strong>Head of Household GAM:</strong> {{ family.head_name }}</p>
                 <p><strong>Phone Number:</strong> {{ family.head_phone }}</p>
                 <p><strong>Marital Status:</strong> {{ family.marital_status | title }}</p>
                 
@@ -27,7 +27,7 @@
                 {% endif %}
                 
                 {% if family.spouse_phone %}
-                <p><strong>Spouse Phone:</strong> {{ family.spouse_phone }}</p>
+                <p><strong>Spouse GAM:</strong> {{ family.spouse_phone }}</p>
                 {% endif %}
             </div>
             <div class="col-md-6">

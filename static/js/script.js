@@ -2,22 +2,22 @@
 function setupChildForms() {
     const childrenCountElement = document.getElementById('children_count');
     if (!childrenCountElement) return;
-    
+
     const childrenCount = parseInt(childrenCountElement.value);
     const container = document.getElementById('childFormsContainer');
     if (!container) return;
-    
+
     // Get children section header - more reliable selector
     const headerRows = document.querySelectorAll('.row');
     let childrenSection = null;
-    
+
     // Find the row containing "Children Information" header
     headerRows.forEach(row => {
         if (row.textContent.includes('Children Information')) {
             childrenSection = row;
         }
     });
-    
+
     // If 0 children, hide the children information section
     if (childrenCount === 0) {
         container.style.display = 'none';
@@ -31,19 +31,19 @@ function setupChildForms() {
             childrenSection.style.display = 'block';
         }
     }
-    
+
     // Store existing values if any
     const existingValues = collectExistingValues();
-    
+
     // Clear container
     container.innerHTML = '';
-    
+
     // Generate forms for each child
     for (let i = 1; i <= childrenCount; i++) {
         const childForm = createChildForm(i, existingValues[i] || {});
         container.appendChild(childForm);
     }
-    
+
     // Set up event listeners for all date of birth inputs
     setupDobListeners();
 }
@@ -52,7 +52,7 @@ function setupChildForms() {
 function collectExistingValues() {
     const values = {};
     const childForms = document.querySelectorAll('.child-form');
-    
+
     childForms.forEach((form, index) => {
         const childNum = index + 1;
         values[childNum] = {
@@ -61,7 +61,7 @@ function collectExistingValues() {
             maritalStatus: document.getElementById(`child_${childNum}-marital_status`)?.value || ''
         };
     });
-    
+
     return values;
 }
 
@@ -70,7 +70,7 @@ function createChildForm(index, existingValues = {}) {
     const div = document.createElement('div');
     div.id = `child_form_${index}`;
     div.className = 'child-form mb-4';
-    
+
     div.innerHTML = `
         <div class="card">
             <div class="card-header bg-secondary">
@@ -102,19 +102,19 @@ function createChildForm(index, existingValues = {}) {
             </div>
         </div>
     `;
-    
+
     return div;
 }
 
 // Set up event listeners for date of birth inputs
 function setupDobListeners() {
     const dobInputs = document.querySelectorAll('.dob-input');
-    
+
     dobInputs.forEach(input => {
         input.addEventListener('change', function() {
             calculateAge(this);
         });
-        
+
         // Calculate age for existing values
         if (input.value) {
             calculateAge(input);
@@ -126,28 +126,28 @@ function setupDobListeners() {
 function calculateAge(dobInput) {
     const dob = dobInput.value;
     if (!dob) return;
-    
+
     const id = dobInput.id;
-    const childIndex = id.split('-')[0];
-    const ageField = document.getElementById(`${childIndex}-age`);
-    
+    const childIndex = id.split('-')[1];
+    const ageField = document.getElementById(`child_${childIndex}-age`);
+
     if (!ageField) return; // Guard against null ageField
-    
+
     // Calculate age client-side
     const birthDate = new Date(dob);
     const today = new Date();
-    
+
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
-    
+
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
         age--;
     }
-    
+
     ageField.value = age + ' years';
-    
+
     // For children under 18, defaulting to "single" since there's no "minor" option anymore
-    const maritalStatusField = document.getElementById(`${childIndex}-marital_status`);
+    const maritalStatusField = document.getElementById(`child_${childIndex}-marital_status`);
     if (age < 18 && maritalStatusField) {
         maritalStatusField.value = 'single';
     }
@@ -156,18 +156,18 @@ function calculateAge(dobInput) {
 // Form validation
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('familyForm');
-    
+
     if (form) {
         form.addEventListener('submit', function(event) {
             if (!form.checkValidity()) {
                 event.preventDefault();
                 event.stopPropagation();
-                
+
                 // Highlight all invalid fields
                 const invalidInputs = form.querySelectorAll(':invalid');
                 invalidInputs.forEach(input => {
                     input.classList.add('is-invalid');
-                    
+
                     // Remove invalid class when input changes
                     input.addEventListener('input', function() {
                         if (this.checkValidity()) {
@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     });
                 });
-                
+
                 // Show validation message
                 const alertDiv = document.createElement('div');
                 alertDiv.className = 'alert alert-danger alert-dismissible fade show mt-3';
@@ -184,21 +184,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     <strong>Error!</strong> Please check the form for errors and try again.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 `;
-                
+
                 // Add alert only if it doesn't already exist
                 if (!document.querySelector('.alert-danger')) {
                     form.prepend(alertDiv);
                 }
-                
+
                 // Scroll to the first invalid field
                 if (invalidInputs.length > 0) {
                     invalidInputs[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
             }
-            
+
             form.classList.add('was-validated');
         });
-        
+
         // Set up validation for phone numbers
         const headPhoneInput = document.getElementById('head_phone');
         if (headPhoneInput) {
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 validatePhoneNumber(this);
             });
         }
-        
+
         const spousePhoneInput = document.getElementById('spouse_phone');
         if (spousePhoneInput) {
             spousePhoneInput.addEventListener('input', function() {
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
-    
+
     // Initial setup for child forms
     setupChildForms();
 });
