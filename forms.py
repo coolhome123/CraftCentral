@@ -37,13 +37,11 @@ class FamilyForm(FlaskForm):
     marital_status = SelectField('Marital Status', validators=[DataRequired()], choices=[
         ('', 'Select Status'),
         ('single', 'Single'),
-        ('married', 'Married'),
-        ('divorced', 'Divorced'),
-        ('widowed', 'Widowed')
+        ('married', 'Married')
     ])
     
     children_count = SelectField('Number of Children', choices=[
-        ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')
+        ('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')
     ])
     
     submit = SubmitField('Save Family Information')

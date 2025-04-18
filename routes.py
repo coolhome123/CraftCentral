@@ -11,7 +11,7 @@ def index():
     
     if request.method == 'POST':
         # Get count of children from the form
-        children_count = int(request.form.get('children_count', 1))
+        children_count = int(request.form.get('children_count', 0))
         
         # Create a new family record
         try:
@@ -26,37 +26,40 @@ def index():
             db.session.add(family)
             db.session.flush()  # Flush to get the family ID
             
-            # Process each child form
+            # Only process children if there are any
             validation_passed = True
-            for i in range(1, children_count + 1):
-                prefix = f'child_{i}'
-                
-                # Validate child form data
-                child_form = ChildForm(prefix=prefix)
-                child_form_data = {
-                    'name': request.form.get(f'{prefix}-name'),
-                    'date_of_birth': request.form.get(f'{prefix}-date_of_birth'),
-                    'marital_status': request.form.get(f'{prefix}-marital_status')
-                }
-                
-                # Validate date format
-                try:
-                    dob = datetime.strptime(child_form_data['date_of_birth'], '%Y-%m-%d').date()
+            
+            if children_count > 0:
+                # Process each child form
+                for i in range(1, children_count + 1):
+                    prefix = f'child_{i}'
                     
-                    # Create child record
-                    child = Child(
-                        name=child_form_data['name'],
-                        date_of_birth=dob,
-                        marital_status=child_form_data['marital_status'],
-                        family_id=family.id
-                    )
-                    db.session.add(child)
-                except ValueError:
-                    flash(f"Invalid date format for Child {i}", "danger")
-                    validation_passed = False
-                except Exception as e:
-                    flash(f"Error processing Child {i}: {str(e)}", "danger")
-                    validation_passed = False
+                    # Validate child form data
+                    child_form = ChildForm(prefix=prefix)
+                    child_form_data = {
+                        'name': request.form.get(f'{prefix}-name'),
+                        'date_of_birth': request.form.get(f'{prefix}-date_of_birth'),
+                        'marital_status': request.form.get(f'{prefix}-marital_status', 'single')
+                    }
+                    
+                    # Validate date format
+                    try:
+                        dob = datetime.strptime(child_form_data['date_of_birth'], '%Y-%m-%d').date()
+                        
+                        # Create child record
+                        child = Child(
+                            name=child_form_data['name'],
+                            date_of_birth=dob,
+                            marital_status=child_form_data['marital_status'],
+                            family_id=family.id
+                        )
+                        db.session.add(child)
+                    except ValueError:
+                        flash(f"Invalid date format for Child {i}", "danger")
+                        validation_passed = False
+                    except Exception as e:
+                        flash(f"Error processing Child {i}: {str(e)}", "danger")
+                        validation_passed = False
             
             if validation_passed:
                 db.session.commit()

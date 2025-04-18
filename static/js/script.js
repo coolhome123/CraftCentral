@@ -7,6 +7,31 @@ function setupChildForms() {
     const container = document.getElementById('childFormsContainer');
     if (!container) return;
     
+    // Get children section header - more reliable selector
+    const headerRows = document.querySelectorAll('.row');
+    let childrenSection = null;
+    
+    // Find the row containing "Children Information" header
+    headerRows.forEach(row => {
+        if (row.textContent.includes('Children Information')) {
+            childrenSection = row;
+        }
+    });
+    
+    // If 0 children, hide the children information section
+    if (childrenCount === 0) {
+        container.style.display = 'none';
+        if (childrenSection) {
+            childrenSection.style.display = 'none';
+        }
+        return;
+    } else {
+        container.style.display = 'block';
+        if (childrenSection) {
+            childrenSection.style.display = 'block';
+        }
+    }
+    
     // Store existing values if any
     const existingValues = collectExistingValues();
     
@@ -245,24 +270,45 @@ function initializeAddressAutocomplete() {
         'Central Park', 'Union Square', 'Market St', 'Church St'
     ];
     
-    // Initialize the Bloodhound suggestion engine
-    const addressSuggestions = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.whitespace,
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        local: addresses.concat(streets.map(street => {
-            // Generate some random addresses with the street names
-            return `123 ${street}`;
-        }))
+        // Pre-generate some complete addresses with street numbers
+    const completeAddresses = [];
+    streets.forEach(street => {
+        // Generate addresses with different street numbers for each street
+        for (let i = 100; i < 300; i += 25) {
+            completeAddresses.push(`${i} ${street}`);
+            
+            // Add some with apartment numbers
+            if (i % 100 === 0) {
+                completeAddresses.push(`${i} ${street}, Apt ${Math.floor(Math.random() * 20) + 1}`);
+            }
+        }
     });
     
-    // Initialize Typeahead on the address input
-    $('#address').typeahead({
-        hint: true,
-        highlight: true,
-        minLength: 2
-    },
-    {
-        name: 'addresses',
-        source: addressSuggestions
-    });
+    // Combine city addresses with street addresses
+    const allAddresses = addresses.concat(completeAddresses);
+    
+    // Initialize Typeahead directly with a simpler approach
+    $('#address').typeahead(
+        {
+            hint: true,
+            highlight: true,
+            minLength: 1
+        },
+        {
+            name: 'addresses',
+            source: function(query, syncResults) {
+                // Simple substring matching
+                const matches = [];
+                const substrRegex = new RegExp(query, 'i');
+                
+                $.each(allAddresses, function(i, address) {
+                    if (substrRegex.test(address)) {
+                        matches.push(address);
+                    }
+                });
+                
+                syncResults(matches.slice(0, 10)); // Limit to 10 results for performance
+            }
+        }
+    );
 }
