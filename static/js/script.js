@@ -24,7 +24,7 @@ function setupChildForms() {
         if (childrenSection) {
             childrenSection.style.display = 'none';
         }
-        return;
+        // Don't return, allow the form to continue processing
     } else {
         container.style.display = 'block';
         if (childrenSection) {
