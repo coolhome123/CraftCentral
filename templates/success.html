@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-success text-white">
+        <h1 class="h3 mb-0"><i class="fas fa-check-circle me-2"></i>Information Submitted Successfully</h1>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-success mb-4">
+            <p class="mb-0"><i class="fas fa-check me-2"></i>Your family information has been saved successfully!</p>
+        </div>
+        
+        <div class="row mb-4">
+            <div class="col-12">
+                <h4 class="border-bottom pb-2">Family Information</h4>
+            </div>
+        </div>
+        
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <p><strong>Family Name:</strong> {{ family.name }}</p>
+                <p><strong>Phone Number:</strong> {{ family.phone }}</p>
+                <p><strong>Marital Status:</strong> {{ family.marital_status | title }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Address:</strong></p>
+                <p>{{ family.address }}</p>
+            </div>
+        </div>
+        
+        <div class="row mb-4">
+            <div class="col-12">
+                <h4 class="border-bottom pb-2">Children Information</h4>
+            </div>
+        </div>
+        
+        <div class="row">
+            {% if family.children %}
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Date of Birth</th>
+                                    <th>Age</th>
+                                    <th>Marital Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for child in family.children %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ child.name }}</td>
+                                    <td>{{ child.date_of_birth.strftime('%Y-%m-%d') }}</td>
+                                    <td>{{ child.age }} years</td>
+                                    <td>{{ child.marital_status | title if child.marital_status else 'N/A' }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        <p class="mb-0">No children information recorded.</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <a href="{{ url_for('index') }}" class="btn btn-primary">
+                    <i class="fas fa-plus-circle me-2"></i>Add Another Family
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
