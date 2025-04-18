@@ -18,12 +18,9 @@ def index():
     family_form = FamilyForm()
     
     if request.method == 'POST':
-        # Get count of children from the form
-        children_count = int(request.form.get('children_count', 0))
         validation_passed = True
-        
-        # Create a new family record
         try:
+            # Create a new family record
             family = Family(
                 head_name=request.form['head_name'],
                 head_phone=request.form['head_phone'],
@@ -35,6 +32,10 @@ def index():
             db.session.add(family)
             db.session.flush()  # Flush to get the family ID
             
+            # Get count of children from the form
+            children_count = int(request.form.get('children_count', 0))
+            
+            # Only process children if there are any
             if children_count > 0:
                 # Process each child form
                 for i in range(1, children_count + 1):
