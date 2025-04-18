@@ -17,18 +17,24 @@
 
             <!-- Head of Household Information -->
             <div class="row mb-3">
-                <div class="col-md-6 mb-3">
-                    <label for="head_name" class="form-label">Head of Household GAM <span class="text-danger">*</span></label>
+                <div class="col-md-4 mb-3">
+                    <label for="head_name" class="form-label">Head of Household Name <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="head_name" name="head_name" required>
-                    <div class="invalid-feedback">Please enter the head of household GAM.</div>
+                    <div class="invalid-feedback">Please enter the head of household name.</div>
                 </div>
 
-                <div class="col-md-6 mb-3">
+                <div class="col-md-4 mb-3">
                     <label for="head_phone" class="form-label">Head of Household Phone <span class="text-danger">*</span></label>
                     <input type="tel" class="form-control" id="head_phone" name="head_phone" 
-                           pattern="[0-9\-\+\(\) ]{10,15}" required>
+                           pattern="[0-9\-\(\) ]{10,15}" required>
                     <div class="invalid-feedback">Please enter a valid phone number.</div>
-                    <small class="form-text text-muted">Format: +1 (555) 123-4567</small>
+                    <small class="form-text text-muted">Format: (555) 123-4567</small>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label for="head_gam" class="form-label">Head of Household GAM <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="head_gam" name="head_gam" required>
+                    <div class="invalid-feedback">Please enter the head of household GAM.</div>
                 </div>
             </div>
 
@@ -40,10 +46,8 @@
                 </div>
 
                 <div class="col-md-6 mb-3">
-                    <label for="spouse_phone" class="form-label">Spouse GAM <small class="text-muted">(Optional)</small></label>
-                    <input type="tel" class="form-control" id="spouse_phone" name="spouse_phone" 
-                           pattern="[0-9\-\+\(\) ]{10,15}">
-                    <small class="form-text text-muted">Format: +1 (555) 123-4567</small>
+                    <label for="spouse_gam" class="form-label">Spouse GAM <small class="text-muted">(Optional)</small></label>
+                    <input type="text" class="form-control" id="spouse_gam" name="spouse_gam">
                 </div>
             </div>
 
@@ -51,7 +55,7 @@
             <div class="row mb-3">
                 <div class="col-md-6 mb-3">
                     <label for="address" class="form-label">CITY USA <small class="text-muted">(Optional)</small></label>
-                    <input type="text" class="form-control" id="address" name="address" value="CITY USA">
+                    <input type="text" class="form-control" id="address" name="address">
                 </div>
 
                 <div class="col-md-6 mb-3">
