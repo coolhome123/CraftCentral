@@ -79,3 +79,30 @@
     padding: 1.5rem 0;
     background-color: var(--bs-dark);
 }
+
+/* Typeahead Styling */
+.tt-menu {
+    width: 100%;
+    margin-top: 2px;
+    padding: 8px 0;
+    background-color: var(--bs-dark);
+    border: 1px solid var(--bs-gray-700);
+    border-radius: 6px;
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.tt-suggestion {
+    padding: 8px 20px;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--bs-light);
+    cursor: pointer;
+}
+
+.tt-suggestion:hover,
+.tt-suggestion.tt-cursor {
+    background-color: var(--bs-primary);
+    color: var(--bs-white);
+}

@@ -72,12 +72,9 @@ function createChildForm(index, existingValues = {}) {
                     <div class="col-md-6 mb-3">
                         <label for="child_${index}-marital_status" class="form-label">Marital Status</label>
                         <select class="form-select" id="child_${index}-marital_status" name="child_${index}-marital_status">
-                            <option value="" ${!existingValues.maritalStatus ? 'selected' : ''}>Select Status</option>
-                            <option value="single" ${existingValues.maritalStatus === 'single' ? 'selected' : ''}>Single</option>
+                            <option value="single" ${!existingValues.maritalStatus || existingValues.maritalStatus === 'single' ? 'selected' : ''}>Single</option>
                             <option value="married" ${existingValues.maritalStatus === 'married' ? 'selected' : ''}>Married</option>
-                            <option value="divorced" ${existingValues.maritalStatus === 'divorced' ? 'selected' : ''}>Divorced</option>
-                            <option value="widowed" ${existingValues.maritalStatus === 'widowed' ? 'selected' : ''}>Widowed</option>
-                            <option value="minor" ${existingValues.maritalStatus === 'minor' ? 'selected' : ''}>Minor (Not Applicable)</option>
+                            <option value="relationship" ${existingValues.maritalStatus === 'relationship' ? 'selected' : ''}>In a Relationship</option>
                         </select>
                     </div>
                 </div>

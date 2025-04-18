@@ -15,27 +15,46 @@
                 </div>
             </div>
             
+            <!-- Head of Household Information -->
             <div class="row mb-3">
                 <div class="col-md-6 mb-3">
-                    <label for="name" class="form-label">Family Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="name" name="name" required>
-                    <div class="invalid-feedback">Please enter the family name.</div>
+                    <label for="head_name" class="form-label">Head of Household Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="head_name" name="head_name" required>
+                    <div class="invalid-feedback">Please enter the head of household name.</div>
                 </div>
                 
                 <div class="col-md-6 mb-3">
-                    <label for="phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
-                    <input type="tel" class="form-control" id="phone" name="phone" 
+                    <label for="head_phone" class="form-label">Head of Household Phone <span class="text-danger">*</span></label>
+                    <input type="tel" class="form-control" id="head_phone" name="head_phone" 
                            pattern="[0-9\-\+\(\) ]{10,15}" required>
                     <div class="invalid-feedback">Please enter a valid phone number.</div>
                     <small class="form-text text-muted">Format: +1 (555) 123-4567</small>
                 </div>
             </div>
             
+            <!-- Spouse Information (Optional) -->
             <div class="row mb-3">
                 <div class="col-md-6 mb-3">
-                    <label for="address" class="form-label">Address <span class="text-danger">*</span></label>
-                    <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
-                    <div class="invalid-feedback">Please enter the address.</div>
+                    <label for="spouse_name" class="form-label">Spouse Name <small class="text-muted">(Optional)</small></label>
+                    <input type="text" class="form-control" id="spouse_name" name="spouse_name">
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label for="spouse_phone" class="form-label">Spouse Phone <small class="text-muted">(Optional)</small></label>
+                    <input type="tel" class="form-control" id="spouse_phone" name="spouse_phone" 
+                           pattern="[0-9\-\+\(\) ]{10,15}">
+                    <small class="form-text text-muted">Format: +1 (555) 123-4567</small>
+                </div>
+            </div>
+            
+            <!-- Address and Marital Status -->
+            <div class="row mb-3">
+                <div class="col-md-6 mb-3">
+                    <label for="address" class="form-label">Address <small class="text-muted">(Optional)</small></label>
+                    <input type="text" class="form-control" id="address" name="address" placeholder="Begin typing to search for address...">
+                    <div id="addressHelpBlock" class="form-text">
+                        Start typing your address and select from the suggestions.
+                    </div>
                 </div>
                 
                 <div class="col-md-6 mb-3">
@@ -51,6 +70,7 @@
                 </div>
             </div>
             
+            <!-- Children Count -->
             <div class="row mb-4">
                 <div class="col-md-6 mb-3">
                     <label for="children_count" class="form-label">Number of Children <span class="text-danger">*</span></label>
@@ -96,12 +116,9 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="child_1-marital_status" class="form-label">Marital Status</label>
                                     <select class="form-select" id="child_1-marital_status" name="child_1-marital_status">
-                                        <option value="" selected>Select Status</option>
-                                        <option value="single">Single</option>
+                                        <option value="single" selected>Single</option>
                                         <option value="married">Married</option>
-                                        <option value="divorced">Divorced</option>
-                                        <option value="widowed">Widowed</option>
-                                        <option value="minor">Minor (Not Applicable)</option>
+                                        <option value="relationship">In a Relationship</option>
                                     </select>
                                 </div>
                             </div>

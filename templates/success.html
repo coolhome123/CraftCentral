@@ -18,13 +18,25 @@
         
         <div class="row mb-4">
             <div class="col-md-6">
-                <p><strong>Family Name:</strong> {{ family.name }}</p>
-                <p><strong>Phone Number:</strong> {{ family.phone }}</p>
+                <p><strong>Head of Household:</strong> {{ family.head_name }}</p>
+                <p><strong>Phone Number:</strong> {{ family.head_phone }}</p>
                 <p><strong>Marital Status:</strong> {{ family.marital_status | title }}</p>
+                
+                {% if family.spouse_name %}
+                <p><strong>Spouse Name:</strong> {{ family.spouse_name }}</p>
+                {% endif %}
+                
+                {% if family.spouse_phone %}
+                <p><strong>Spouse Phone:</strong> {{ family.spouse_phone }}</p>
+                {% endif %}
             </div>
             <div class="col-md-6">
+                {% if family.address %}
                 <p><strong>Address:</strong></p>
                 <p>{{ family.address }}</p>
+                {% else %}
+                <p><strong>Address:</strong> Not provided</p>
+                {% endif %}
             </div>
         </div>
         
