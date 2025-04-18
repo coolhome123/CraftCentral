@@ -125,10 +125,10 @@ function calculateAge(dobInput) {
     
     ageField.value = age + ' years';
     
-    // Optionally, if age is under 18, automatically set marital status to "minor"
+    // For children under 18, defaulting to "single" since there's no "minor" option anymore
     const maritalStatusField = document.getElementById(`${childIndex}-marital_status`);
     if (age < 18 && maritalStatusField) {
-        maritalStatusField.value = 'minor';
+        maritalStatusField.value = 'single';
     }
 }
 
@@ -137,6 +137,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('familyForm');
     
     if (form) {
+        // Initialize address autocomplete
+        initializeAddressAutocomplete();
+        
         form.addEventListener('submit', function(event) {
             if (!form.checkValidity()) {
                 event.preventDefault();
@@ -178,16 +181,18 @@ document.addEventListener('DOMContentLoaded', function() {
             form.classList.add('was-validated');
         });
         
-        // Set up validation for phone number
-        const phoneInput = document.getElementById('phone');
-        if (phoneInput) {
-            phoneInput.addEventListener('input', function() {
-                const pattern = /^[0-9\-\+\(\) ]{10,15}$/;
-                if (this.value && !pattern.test(this.value)) {
-                    this.setCustomValidity('Please enter a valid phone number.');
-                } else {
-                    this.setCustomValidity('');
-                }
+        // Set up validation for phone numbers
+        const headPhoneInput = document.getElementById('head_phone');
+        if (headPhoneInput) {
+            headPhoneInput.addEventListener('input', function() {
+                validatePhoneNumber(this);
+            });
+        }
+        
+        const spousePhoneInput = document.getElementById('spouse_phone');
+        if (spousePhoneInput) {
+            spousePhoneInput.addEventListener('input', function() {
+                validatePhoneNumber(this);
             });
         }
     }
@@ -195,3 +200,69 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initial setup for child forms
     setupChildForms();
 });
+
+// Validate phone numbers
+function validatePhoneNumber(input) {
+    const pattern = /^[0-9\-\+\(\) ]{10,15}$/;
+    if (input.value && !pattern.test(input.value)) {
+        input.setCustomValidity('Please enter a valid phone number.');
+    } else {
+        input.setCustomValidity('');
+    }
+}
+
+// Initialize address autocomplete with typeahead.js
+function initializeAddressAutocomplete() {
+    // Sample list of common addresses and neighborhoods for autocomplete
+    const addresses = [
+        // Major US cities and neighborhoods
+        'New York, NY', 'Brooklyn, NY', 'Queens, NY', 'Manhattan, NY', 'Bronx, NY', 'Staten Island, NY',
+        'Los Angeles, CA', 'Beverly Hills, CA', 'Hollywood, CA', 'Santa Monica, CA', 'Venice, CA',
+        'Chicago, IL', 'Wicker Park, Chicago, IL', 'Lincoln Park, Chicago, IL', 'The Loop, Chicago, IL',
+        'Houston, TX', 'Phoenix, AZ', 'Philadelphia, PA', 'San Antonio, TX', 
+        'San Diego, CA', 'Dallas, TX', 'San Jose, CA', 'Austin, TX',
+        'San Francisco, CA', 'Mission District, San Francisco, CA', 'SOMA, San Francisco, CA',
+        'Seattle, WA', 'Boston, MA', 'Denver, CO', 'Portland, OR', 'Miami, FL',
+        'Atlanta, GA', 'Detroit, MI', 'Minneapolis, MN', 'New Orleans, LA',
+        
+        // International cities
+        'Toronto, Canada', 'Vancouver, Canada', 'Montreal, Canada',
+        'London, UK', 'Manchester, UK', 'Liverpool, UK',
+        'Paris, France', 'Berlin, Germany', 'Madrid, Spain', 'Barcelona, Spain',
+        'Rome, Italy', 'Milan, Italy', 'Venice, Italy',
+        'Tokyo, Japan', 'Sydney, Australia', 'Melbourne, Australia',
+        'Auckland, New Zealand', 'Cape Town, South Africa',
+        'Mexico City, Mexico', 'Dubai, UAE', 'Singapore'
+    ];
+    
+    // Common street names to suggest
+    const streets = [
+        'Main St', 'Broadway', 'Park Ave', 'Oak St', 'Maple St', 'Washington St',
+        'Lincoln Ave', 'Jefferson St', 'Highland Ave', 'Madison Ave', 'Lake St',
+        'Sunset Blvd', 'Ocean Ave', 'River Rd', 'Mountain View Dr', 'Woodland Dr',
+        'Forest Ave', 'Meadow Ln', 'Cedar St', 'Pine St', 'Elm St', 'Willow St',
+        'Cherry St', 'Chestnut St', '1st Ave', '2nd St', '3rd Ave', '4th St',
+        'Central Park', 'Union Square', 'Market St', 'Church St'
+    ];
+    
+    // Initialize the Bloodhound suggestion engine
+    const addressSuggestions = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        local: addresses.concat(streets.map(street => {
+            // Generate some random addresses with the street names
+            return `123 ${street}`;
+        }))
+    });
+    
+    // Initialize Typeahead on the address input
+    $('#address').typeahead({
+        hint: true,
+        highlight: true,
+        minLength: 2
+    },
+    {
+        name: 'addresses',
+        source: addressSuggestions
+    });
+}
