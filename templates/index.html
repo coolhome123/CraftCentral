@@ -8,13 +8,13 @@
     <div class="card-body">
         <form method="POST" id="familyForm">
             {{ form.csrf_token }}
-            
+
             <div class="row mb-4">
                 <div class="col-12">
                     <h4 class="border-bottom pb-2">Primary Information</h4>
                 </div>
             </div>
-            
+
             <!-- Head of Household Information -->
             <div class="row mb-3">
                 <div class="col-md-6 mb-3">
@@ -22,7 +22,7 @@
                     <input type="text" class="form-control" id="head_name" name="head_name" required>
                     <div class="invalid-feedback">Please enter the head of household name.</div>
                 </div>
-                
+
                 <div class="col-md-6 mb-3">
                     <label for="head_phone" class="form-label">Head of Household Phone <span class="text-danger">*</span></label>
                     <input type="tel" class="form-control" id="head_phone" name="head_phone" 
@@ -31,14 +31,14 @@
                     <small class="form-text text-muted">Format: +1 (555) 123-4567</small>
                 </div>
             </div>
-            
+
             <!-- Spouse Information (Optional) -->
             <div class="row mb-3">
                 <div class="col-md-6 mb-3">
                     <label for="spouse_name" class="form-label">Spouse Name <small class="text-muted">(Optional)</small></label>
                     <input type="text" class="form-control" id="spouse_name" name="spouse_name">
                 </div>
-                
+
                 <div class="col-md-6 mb-3">
                     <label for="spouse_phone" class="form-label">Spouse Phone <small class="text-muted">(Optional)</small></label>
                     <input type="tel" class="form-control" id="spouse_phone" name="spouse_phone" 
@@ -46,14 +46,14 @@
                     <small class="form-text text-muted">Format: +1 (555) 123-4567</small>
                 </div>
             </div>
-            
+
             <!-- Address and Marital Status -->
             <div class="row mb-3">
                 <div class="col-md-6 mb-3">
                     <label for="address" class="form-label">Address <small class="text-muted">(Optional)</small></label>
                     <input type="text" class="form-control" id="address" name="address">
                 </div>
-                
+
                 <div class="col-md-6 mb-3">
                     <label for="marital_status" class="form-label">Marital Status <span class="text-danger">*</span></label>
                     <select class="form-select" id="marital_status" name="marital_status" required>
@@ -64,7 +64,7 @@
                     <div class="invalid-feedback">Please select marital status.</div>
                 </div>
             </div>
-            
+
             <!-- Children Count -->
             <div class="row mb-4">
                 <div class="col-md-6 mb-3">
@@ -79,13 +79,13 @@
                     </select>
                 </div>
             </div>
-            
+
             <div class="row mb-4">
                 <div class="col-12">
                     <h4 class="border-bottom pb-2">Children Information</h4>
                 </div>
             </div>
-            
+
             <div id="childFormsContainer">
                 <!-- Child forms will be dynamically generated here -->
                 <div id="child_form_1" class="child-form mb-4">
@@ -122,7 +122,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-12 text-center">
                     <button type="submit" class="btn btn-primary btn-lg">
@@ -140,7 +140,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Handle the initial child form and set up listeners
     setupChildForms();
-    
+
     // Listen for changes to the children count dropdown
     document.getElementById('children_count').addEventListener('change', function() {
         setupChildForms();
