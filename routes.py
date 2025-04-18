@@ -79,6 +79,11 @@ def success(family_id):
     family = Family.query.get_or_404(family_id)
     return render_template('success.html', family=family)
 
+@app.route('/families')
+def list_families():
+    families = Family.query.order_by(Family.created_at.desc()).all()
+    return render_template('families.html', families=families)
+
 @app.route('/api/calculate-age', methods=['POST'])
 def calculate_age():
     try:
