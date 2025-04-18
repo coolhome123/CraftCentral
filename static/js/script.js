@@ -109,6 +109,8 @@ function calculateAge(dobInput) {
     const childIndex = id.split('-')[0];
     const ageField = document.getElementById(`${childIndex}-age`);
     
+    if (!ageField) return; // Guard against null ageField
+    
     // Calculate age client-side
     const birthDate = new Date(dob);
     const today = new Date();
