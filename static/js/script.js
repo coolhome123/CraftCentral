@@ -1,7 +1,11 @@
 // Function to set up child forms based on selected count
 function setupChildForms() {
-    const childrenCount = parseInt(document.getElementById('children_count').value);
+    const childrenCountElement = document.getElementById('children_count');
+    if (!childrenCountElement) return;
+    
+    const childrenCount = parseInt(childrenCountElement.value);
     const container = document.getElementById('childFormsContainer');
+    if (!container) return;
     
     // Store existing values if any
     const existingValues = collectExistingValues();
